@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
    import express from 'express';
    import authRoutes from './src/routes/authRoutes.js';
+   import usersRoutes from './src/routes/usersRoutes.js'
    import wasteRoutes from './src/routes/wasteRoutes.js';
    import tipsRoutes from './src/routes/tipsRoutes.js';
    import achievementsRoutes from './src/routes/achievementsRoutes.js';
@@ -18,6 +19,7 @@ import dotenv from 'dotenv';
    // Define routes
    app.use('/api/auth', authRoutes);
    app.use('/api/waste', wasteRoutes);
+   app.use('/api/users', usersRoutes)
    app.use('/api/tips', tipsRoutes);
    app.use('/api/achievements', achievementsRoutes);
 
