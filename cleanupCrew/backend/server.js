@@ -1,9 +1,9 @@
 /* global process */
+import { sequelize } from './src/models/index.js';
 import dotenv from 'dotenv';
    dotenv.config();
 
    import express from 'express';
-   import { sequelize } from './src/models/index.js';
    import authRoutes from './src/routes/authRoutes.js';
    import wasteRoutes from './src/routes/wasteRoutes.js';
    import tipsRoutes from './src/routes/tipsRoutes.js';
