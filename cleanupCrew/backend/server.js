@@ -4,11 +4,12 @@ import dotenv from 'dotenv';
    dotenv.config();
 
    import express from 'express';
-   import authRoutes from './src/routes/authRoutes.js';
    import usersRoutes from './src/routes/usersRoutes.js'
    import wasteRoutes from './src/routes/wasteRoutes.js';
-   import tipsRoutes from './src/routes/tipsRoutes.js';
    import achievementsRoutes from './src/routes/achievementsRoutes.js';
+   import friendsRoutes from './src/routes/friendsRoutes.js';
+   import categoryRoutes from './src/routes/categoryRoutes.js';
+
 
    // Initialize Express app
    const app = express();
@@ -17,11 +18,11 @@ import dotenv from 'dotenv';
    app.use(express.json());
 
    // Define routes
-   app.use('/api/auth', authRoutes);
    app.use('/api/waste', wasteRoutes);
    app.use('/api/users', usersRoutes)
-   app.use('/api/tips', tipsRoutes);
    app.use('/api/achievements', achievementsRoutes);
+   app.use('/api/friends', friendsRoutes);
+   app.use('/api/category', categoryRoutes);
 
    // Basic route for testing
    app.get('/', (req, res) => {
