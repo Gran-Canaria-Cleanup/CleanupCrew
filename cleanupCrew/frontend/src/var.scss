@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Saira+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 // Colors
 $color-navar: #F8F3DB;
 $color-beige: #FFFBE9;
@@ -7,6 +9,7 @@ $color-blue: #6EB7EB;
 $color-yellow: #F6D65D;
 $color-grey: #D9D9D9;
 $color-red: #F17174;
+$color-white: #ffffff;
 
 // Font Sizes
 $font-size-xs: 12px;
@@ -17,7 +20,7 @@ $font-size-xl: 24px;
 $font-size-xxl: 32px;
 
 // Fonts
-$font-primary: 'Roboto', sans-serif;
+$font-primary: 'Instrument Sans';
 $font-secondary: 'Open Sans', sans-serif;
 $font-monospace: 'Courier New', monospace;
 
