@@ -11,10 +11,6 @@ export default (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    options: {
-      type: DataTypes.STRING, // Stored as JSON string, e.g., '["Plastic", "Wood", "Food", "Glass"]'
-      allowNull: false,
-    },
     correctAnswer: {
       type: DataTypes.STRING,
       allowNull: false,

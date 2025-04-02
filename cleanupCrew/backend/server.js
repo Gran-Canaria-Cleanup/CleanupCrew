@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
    import usersRoutes from './src/routes/usersRoutes.js'
    import wasteRoutes from './src/routes/wasteRoutes.js';
    import tipsRoutes from './src/routes/tipsRoutes.js';
+   import questionsRoutes from './src/routes/questionsRoutes.js'
    import achievementsRoutes from './src/routes/achievementsRoutes.js';
 
    // Initialize Express app
@@ -21,6 +22,7 @@ import dotenv from 'dotenv';
    app.use('/api/waste', wasteRoutes);
    app.use('/api/users', usersRoutes)
    app.use('/api/tips', tipsRoutes);
+   app.use('/api/questions', questionsRoutes)
    app.use('/api/achievements', achievementsRoutes);
 
    // Basic route for testing
