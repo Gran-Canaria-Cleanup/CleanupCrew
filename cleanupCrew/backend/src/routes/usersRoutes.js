@@ -1,3 +1,4 @@
+/* global process */
 import express from 'express';
 import { User } from '../models/index.js';
 import bcrypt from 'bcryptjs';
