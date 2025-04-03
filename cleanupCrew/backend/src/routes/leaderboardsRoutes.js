@@ -1,5 +1,5 @@
 import express from 'express';
-import { Leaderboard } from '../models/index.js';
+import { Leaderboard, User } from '../models/index.js';
 import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
@@ -17,10 +17,14 @@ router.post('/', authMiddleware, async (req, res) => {
 // Obtener todos los leaderboards (Protected)
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    const leaderboards = await Leaderboard.findAll();
-    res.status(200).json(leaderboards);
+    const leaderboard = await Leaderboard.findAll({
+      include: { model: User, attributes: ['id', 'name', 'score'] },
+      order: [['createdAt', 'DESC']],
+    });
+
+    res.status(200).json(leaderboard);
   } catch (error) {
-    res.status(400).json({ message: 'Error al obtener los leaderboards', error });
+    res.status(500).json({ message: 'Error fetching leaderboard', error: error.message });
   }
 });
 
@@ -28,14 +32,18 @@ router.get('/', authMiddleware, async (req, res) => {
 router.get('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
-    const leaderboard = await Leaderboard.findByPk(id);
-    if (leaderboard) {
-      res.status(200).json(leaderboard);
-    } else {
-      res.status(404).json({ message: 'Leaderboard no encontrado' });
+    const { id } = req.params;
+    const entry = await Leaderboard.findByPk(id, {
+      include: { model: User, attributes: ['id', 'name', 'score'] },
+    });
+
+    if (!entry) {
+      return res.status(404).json({ message: 'Leaderboard entry not found' });
     }
+
+    res.status(200).json(entry);
   } catch (error) {
-    res.status(400).json({ message: 'Error al obtener el leaderboard', error });
+    res.status(500).json({ message: 'Error fetching leaderboard entry', error: error.message });
   }
 });
 
@@ -43,31 +51,82 @@ router.get('/:id', authMiddleware, async (req, res) => {
 router.put('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
-    const leaderboard = await Leaderboard.findByPk(id);
-    if (leaderboard) {
-      await leaderboard.update(req.body);
-      res.status(200).json(leaderboard);
-    } else {
-      res.status(404).json({ message: 'Leaderboard no encontrado' });
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ message: 'Leaderboard name is required' });
     }
+
+    const newLeaderboard = await Leaderboard.create({ name });
+
+    res.status(201).json({ message: 'Leaderboard created successfully', leaderboard: newLeaderboard });
   } catch (error) {
-    res.status(400).json({ message: 'Error al actualizar el leaderboard', error });
+    res.status(500).json({ message: 'Error creating leaderboard', error: error.message });
   }
 });
 
-// Eliminar un leaderboard por su ID (Protected)
-router.delete('/:id', authMiddleware, async (req, res) => {
-  const { id } = req.params;
+router.post('/:leaderboardId/users', async (req, res) => {
   try {
-    const leaderboard = await Leaderboard.findByPk(id);
-    if (leaderboard) {
-      await leaderboard.destroy();
-      res.status(200).json({ message: 'Leaderboard eliminado correctamente' });
-    } else {
-      res.status(404).json({ message: 'Leaderboard no encontrado' });
+    const { leaderboardId } = req.params;
+    const { userId } = req.body;
+
+    const leaderboard = await Leaderboard.findByPk(leaderboardId);
+    const user = await User.findByPk(userId);
+
+    if (!leaderboard) {
+      return res.status(404).json({ message: 'Leaderboard not found' });
     }
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    await leaderboard.addUser(user);
+
+    res.status(200).json({ message: 'User added to leaderboard successfully' });
   } catch (error) {
-    res.status(400).json({ message: 'Error al eliminar el leaderboard', error });
+    res.status(500).json({ message: 'Error adding user to leaderboard', error: error.message });
+  }
+});
+
+
+router.get('/:leaderboardId/users', async (req, res) => {
+  try {
+    const { leaderboardId } = req.params;
+
+    const leaderboard = await Leaderboard.findByPk(leaderboardId, {
+      include: {
+        model: User,
+        attributes: ['id', 'name', 'score'],
+        through: { attributes: [] },
+      },
+    });
+
+    if (!leaderboard) {
+      return res.status(404).json({ message: 'Leaderboard not found' });
+    }
+
+    res.status(200).json(leaderboard.Users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching leaderboard users', error: error.message });
+  }
+});
+
+
+
+// Delete a leaderboard entry by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const entry = await Leaderboard.findByPk(id);
+
+    if (!entry) {
+      return res.status(404).json({ message: 'Leaderboard entry not found' });
+    }
+
+    await entry.destroy();
+    res.status(200).json({ message: 'Leaderboard entry deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting leaderboard entry', error: error.message });
   }
 });
 
