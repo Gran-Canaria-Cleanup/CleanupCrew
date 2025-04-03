@@ -1,10 +1,11 @@
 import express from 'express';
 import { Question } from '../models/index.js';
+import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Create a question
-router.post('/', async (req, res) => {
+// Create a question (Protected)
+router.post('/', authMiddleware, async (req, res) => {
   try {
     const { question, correctAnswer, points } = req.body;
 
@@ -16,8 +17,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get all questions
-router.get('/', async (req, res) => {
+// Get all questions (Protected)
+router.get('/', authMiddleware, async (req, res) => {
   try {
     const questions = await Question.findAll();
     res.status(200).json(questions);
@@ -26,8 +27,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a question by ID
-router.get('/:id', async (req, res) => {
+// Get a question by ID (Protected)
+router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const question = await Question.findByPk(id);
@@ -42,8 +43,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Update a question
-router.put('/:id', async (req, res) => {
+// Update a question (Protected)
+router.put('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const { question, correctAnswer, points } = req.body;
@@ -65,8 +66,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete a question by ID
-router.delete('/:id', async (req, res) => {
+// Delete a question by ID (Protected)
+router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const question = await Question.findByPk(id);
