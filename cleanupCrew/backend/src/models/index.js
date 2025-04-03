@@ -30,6 +30,9 @@ const Leaderboard = LeaderboardModel(sequelize);
 const Friend = FriendModel(sequelize);
 const Question = QuestionModel(sequelize);
 
+// Define the intermediary model (LeaderboardUser)
+const LeaderboardUser = sequelize.define('LeaderboardUser', {}, { timestamps: false });
+
 // Define relationships
 User.hasMany(Achievement, { foreignKey: 'user_id' });
 Achievement.belongsTo(User, { foreignKey: 'user_id' });
@@ -40,8 +43,8 @@ Category.belongsTo(Achievement, { foreignKey: 'achievement_id' });
 User.hasMany(Trash, { foreignKey: 'user_id' });
 Trash.belongsTo(User, { foreignKey: 'user_id' });
 
-User.hasMany(Leaderboard, { foreignKey: 'user_id' });
-Leaderboard.belongsTo(User, { foreignKey: 'user_id' });
+Leaderboard.belongsToMany(User, { through: LeaderboardUser });
+User.belongsToMany(Leaderboard, { through: LeaderboardUser });
 
 User.hasMany(Friend, { foreignKey: 'user_id' });
 Friend.belongsTo(User, { foreignKey: 'user_id' });

@@ -7,6 +7,11 @@ export default (sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
   }, {
     timestamps: true,
     tableName: 'Leaderboard',

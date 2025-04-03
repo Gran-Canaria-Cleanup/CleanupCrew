@@ -12,7 +12,7 @@ export default (sequelize) => {
       allowNull: false,
     },
     correctAnswer: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
     points: {
