@@ -4,7 +4,7 @@ import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Crear un nuevo leaderboard (Protected)
+// Create a new leaderboard (Protected)
 router.post('/', authMiddleware, async (req, res) => {
   try {
     const leaderboard = await Leaderboard.create(req.body);
@@ -14,7 +14,7 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
-// Obtener todos los leaderboards (Protected)
+// Get all the leaderboards (Protected)
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const leaderboard = await Leaderboard.findAll({
@@ -28,7 +28,7 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// Obtener un leaderboard por su ID (Protected)
+// Get an leaderboard by ID (Protected)
 router.get('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
@@ -47,7 +47,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// Actualizar un leaderboard por su ID (Protected)
+// Update a leaderboard by id (Protected)
 router.put('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
@@ -65,6 +65,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// Add an user to the leaderboard you choose
 router.post('/:leaderboardId/users', async (req, res) => {
   try {
     const { leaderboardId } = req.params;
@@ -88,7 +89,7 @@ router.post('/:leaderboardId/users', async (req, res) => {
   }
 });
 
-
+// Get all the users in one leaderboard
 router.get('/:leaderboardId/users', async (req, res) => {
   try {
     const { leaderboardId } = req.params;
