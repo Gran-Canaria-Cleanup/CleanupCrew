@@ -1,10 +1,21 @@
 import express from 'express';
 import { Leaderboard, User } from '../models/index.js';
+import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Get all leaderboard entries
-router.get('/', async (req, res) => {
+// Crear un nuevo leaderboard (Protected)
+router.post('/', authMiddleware, async (req, res) => {
+  try {
+    const leaderboard = await Leaderboard.create(req.body);
+    res.status(201).json(leaderboard);
+  } catch (error) {
+    res.status(400).json({ message: 'Error al crear el leaderboard', error });
+  }
+});
+
+// Obtener todos los leaderboards (Protected)
+router.get('/', authMiddleware, async (req, res) => {
   try {
     const leaderboard = await Leaderboard.findAll({
       include: { model: User, attributes: ['id', 'name', 'score'] },
@@ -17,8 +28,9 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a leaderboard entry by ID
-router.get('/:id', async (req, res) => {
+// Obtener un leaderboard por su ID (Protected)
+router.get('/:id', authMiddleware, async (req, res) => {
+  const { id } = req.params;
   try {
     const { id } = req.params;
     const entry = await Leaderboard.findByPk(id, {
@@ -35,8 +47,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Create a leaderboard entry (assign a user to leaderboard)
-router.post('/', async (req, res) => {
+// Actualizar un leaderboard por su ID (Protected)
+router.put('/:id', authMiddleware, async (req, res) => {
+  const { id } = req.params;
   try {
     const { name } = req.body;
 

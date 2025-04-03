@@ -3,10 +3,11 @@ import express from 'express';
 import { User } from '../models/index.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Register a user
+// Register a user (No authentication required)
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -29,7 +30,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login
+// Login (No authentication required)
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -47,7 +48,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1h' });
 
     res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
@@ -55,8 +56,8 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Get all users
-router.get('/', async (req, res) => {
+// Get all users (Protected)
+router.get('/', authMiddleware, async (req, res) => {
   try {
     const users = await User.findAll();
     res.status(200).json(users);
@@ -65,8 +66,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get user by ID
-router.get('/:id', async (req, res) => {
+// Get user by ID (Protected)
+router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findByPk(id);
@@ -79,8 +80,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Update user
-router.put('/:id', async (req, res) => {
+// Update user (Protected)
+router.put('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, email, password } = req.body;
@@ -110,8 +111,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete user by ID
-router.delete('/:id', async (req, res) => {
+// Delete user by ID (Protected)
+router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findByPk(id);
