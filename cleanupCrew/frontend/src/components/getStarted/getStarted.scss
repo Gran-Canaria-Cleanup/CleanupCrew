@@ -11,10 +11,14 @@
             background-color: $color-light-green;
             border: 0;
             border-radius: 32px;
-        p{
+            padding-top: 12px;
+            padding-bottom: 12px;
+        .buttonText{
             font-family: $font-primary;
             font-weight: 400;
-            font-size: 15px;
+            font-size: 16px;
+            text-decoration: none;
+            color: black;
         }
     }
 
