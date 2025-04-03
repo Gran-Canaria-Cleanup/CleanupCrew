@@ -1,10 +1,11 @@
 import express from 'express';
 import { Category, Achievement } from '../models/index.js';
+import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Get category for an achievement
-router.get('/:achievementId', async (req, res) => {
+// Get category for an achievement (Protected)
+router.get('/:achievementId', authMiddleware, async (req, res) => {
   try {
     const { achievementId } = req.params;
 
@@ -22,8 +23,8 @@ router.get('/:achievementId', async (req, res) => {
   }
 });
 
-// Update category for an achievement
-router.put('/:achievementId', async (req, res) => {
+// Update category for an achievement (Protected)
+router.put('/:achievementId', authMiddleware, async (req, res) => {
   try {
     const { achievementId } = req.params;
     const { glass, plastic, paper, friends } = req.body;

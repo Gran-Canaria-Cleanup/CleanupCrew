@@ -9,8 +9,8 @@ import dotenv from 'dotenv';
    import achievementsRoutes from './src/routes/achievementsRoutes.js';
    import friendsRoutes from './src/routes/friendsRoutes.js';
    import questionsRoutes from './src/routes/questionsRoutes.js'
-   import categoryRoutes from './src/routes/categoryRoutes.js';
    import leaderboardsRoutes from './src/routes/leaderboardsRoutes.js';
+   import categoryRoutes from './src/routes/categoryRoutes.js';
 
 
    // Initialize Express app
@@ -25,8 +25,8 @@ import dotenv from 'dotenv';
    app.use('/api/achievements', achievementsRoutes);
    app.use('/api/friends', friendsRoutes);
    app.use('/api/questions',questionsRoutes)
+   app.use('/api/leaderboards', leaderboardsRoutes);
    app.use('/api/category', categoryRoutes);
-   app.use('/api/leaderboards', leaderboardsRoutes)
 
    // Basic route for testing
    app.get('/', (req, res) => {
