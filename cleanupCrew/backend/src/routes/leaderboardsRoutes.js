@@ -1,5 +1,5 @@
 import express from 'express';
-import { Leaderboard } from '../models';
+import { Leaderboard } from '../models/index.js';
 import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
