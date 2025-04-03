@@ -6,9 +6,9 @@ import { GetStarted }  from '../../components/getStarted/getStarted.jsx'
 export const SplashScreen = () => {
   
   return (
-    <>
+    <section className='splashBody'>
       <StartLogo/>
       <GetStarted/>
-    </>
+    </section>
   );
 };
