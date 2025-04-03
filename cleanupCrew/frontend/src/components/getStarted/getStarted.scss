@@ -1,0 +1,37 @@
+@import '../../var.scss';
+
+.getStartedSection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    .getStartedButton{
+            width: 100%;
+            background-color: $color-light-green;
+            border: 0;
+            border-radius: 32px;
+        p{
+            font-family: $font-primary;
+            font-weight: 400;
+            font-size: 15px;
+        }
+    }
+
+    .getStartedText{
+            margin-top: 3rem;
+        p{
+            color: black;
+            font-family: $font-primary;
+            font-weight: 500;
+        }
+    }
+}
+
+.getStartedWrapper{
+    width: 75vw;
+    height: 22vh;
+    position: absolute;
+    bottom: 1rem;
+    padding-bottom: 1rem;
+}
