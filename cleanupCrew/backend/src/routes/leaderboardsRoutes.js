@@ -1,10 +1,11 @@
 import express from 'express';
-import { Leaderboard } from '../models'; // Asegúrate de importar el modelo
+import { Leaderboard } from '../models';
+import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Crear un nuevo leaderboard
-router.post('/', async (req, res) => {
+// Crear un nuevo leaderboard (Protected)
+router.post('/', authMiddleware, async (req, res) => {
   try {
     const leaderboard = await Leaderboard.create(req.body);
     res.status(201).json(leaderboard);
@@ -13,8 +14,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Obtener todos los leaderboards
-router.get('/', async (req, res) => {
+// Obtener todos los leaderboards (Protected)
+router.get('/', authMiddleware, async (req, res) => {
   try {
     const leaderboards = await Leaderboard.findAll();
     res.status(200).json(leaderboards);
@@ -23,8 +24,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Obtener un leaderboard por su ID
-router.get('/:id', async (req, res) => {
+// Obtener un leaderboard por su ID (Protected)
+router.get('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
     const leaderboard = await Leaderboard.findByPk(id);
@@ -38,8 +39,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Actualizar un leaderboard por su ID
-router.put('/:id', async (req, res) => {
+// Actualizar un leaderboard por su ID (Protected)
+router.put('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
     const leaderboard = await Leaderboard.findByPk(id);
@@ -54,8 +55,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Eliminar un leaderboard por su ID
-router.delete('/:id', async (req, res) => {
+// Eliminar un leaderboard por su ID (Protected)
+router.delete('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   try {
     const leaderboard = await Leaderboard.findByPk(id);

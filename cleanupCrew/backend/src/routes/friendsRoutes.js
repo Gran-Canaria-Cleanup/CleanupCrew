@@ -1,10 +1,11 @@
 import express from 'express';
 import { Friend, User } from '../models/index.js';
+import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Add a friend for a user
-router.post('/add', async (req, res) => {
+// Add a friend for a user (Protected)
+router.post('/add', authMiddleware, async (req, res) => {
   try {
     const { userId, name } = req.body;
 
@@ -26,8 +27,8 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Get friends for a user
-router.get('/:userId', async (req, res) => {
+// Get friends for a user (Protected)
+router.get('/:userId', authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params;
 
