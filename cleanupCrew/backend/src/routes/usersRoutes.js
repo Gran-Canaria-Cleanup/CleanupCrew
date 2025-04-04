@@ -33,21 +33,33 @@ router.post('/register', async (req, res) => {
 // Login (No authentication required)
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.header;
 
-    // Check if the user exists
+    // If there is no body, try to get credentials from Basic Auth
+    if (!email || !password) {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith('Basic ')) {
+        return res.status(401).json({ message: 'Missing Authorization header' });
+      }
+
+      // Decode the Base64 (email:password)
+      const base64Credentials = authHeader.split(' ')[1];
+      [email, password] = Buffer.from(base64Credentials, 'base64').toString('utf-8').split(':');
+    }
+
+    // Find the user by email
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    // Verify the password
+    // Check if the password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    // Generate JWT token
+    // Generate the token
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1h' });
 
     res.status(200).json({ message: 'Login successful', token });
