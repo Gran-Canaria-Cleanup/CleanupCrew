@@ -1,0 +1,54 @@
+.addTrashSection{
+    color: black;
+    h2{
+        margin-left: 1rem;
+        margin-bottom: 1rem;
+    }
+    .trashButtonSection{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        .trashButton{
+            padding: 1rem;
+            border-radius: 100%;
+            height: 4rem;
+            width: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+
+        .trashText{
+            position: absolute;
+            top: 1%;
+        }
+            p{
+                font-size: 40px;
+                font-weight: 600;
+                margin-top: 1rem;
+            }
+            h2{
+                font-size: larger;
+                font-weight: 500;
+                margin-bottom: -0.8rem;
+                margin-right: 1rem;
+            }
+        }
+    }
+}
+
+#yellowButton{
+    background-color: #F6D65D;
+}
+
+#greenButton{
+    background-color: #A8DF8A;
+}
+
+#blueButton{
+    background-color: #6EB7EB;
+}

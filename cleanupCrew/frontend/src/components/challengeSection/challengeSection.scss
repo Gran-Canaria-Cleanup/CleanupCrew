@@ -1,0 +1,33 @@
+@import '../../var.scss';
+
+.challengeSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .challengeHeader{
+
+        h2{
+            color: black;
+            font-weight: 500;
+        }
+    }
+
+    .collectionSection{
+        background-color: $color-beige;
+        border-color: $color-yellow;
+        border: 1px solid;
+        border-radius: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        width: 85%;
+
+        h2{
+            color: black;
+            font-size: 1.5rem;
+        }
+        p{
+            color: black;
+        }
+    }
+}
