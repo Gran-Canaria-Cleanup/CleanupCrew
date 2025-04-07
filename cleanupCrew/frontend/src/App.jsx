@@ -7,19 +7,32 @@ import { MapScreen } from '../src/pageComponents/map/mapScreen.jsx';
 import { ProfileScreen } from '../src/pageComponents/profile/profileScreen.jsx';
 import { QuizScreen } from '../src/pageComponents/quiz/quizScreen.jsx';
 import { StatsScreen } from '../src/pageComponents/stats/statsScreen.jsx';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+// PrivateRoute component to protect routes
+const PrivateRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
+  return token ? children : <Navigate to="/login" />;
+};
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<SplashScreen />} />  {/* Splash screen */}
+        <Route path="/" element={<SplashScreen />} /> {/* Splash screen */}
         <Route path="/login" element={<LoginScreen />} /> {/* Login page */}
-        <Route path="/homepage" element={<Homepage />} /> {/* Home page */}
+        <Route
+          path="/homepage"
+          element={
+            <PrivateRoute>
+              <Homepage />
+            </PrivateRoute>
+          }
+        /> {/* Protected Home page */}
         <Route path="/map" element={<MapScreen />} /> {/* Map page */}
-        <Route path="/profile" element={<ProfileScreen />} /> {/* Map page */}
-        <Route path="/quiz" element={<QuizScreen />} /> {/* Map page */}
-        <Route path="/stats" element={<StatsScreen />} /> {/* Map page */}
+        <Route path="/profile" element={<ProfileScreen />} /> {/* Profile page */}
+        <Route path="/quiz" element={<QuizScreen />} /> {/* Quiz page */}
+        <Route path="/stats" element={<StatsScreen />} /> {/* Stats page */}
       </Routes>
     </BrowserRouter>
   );

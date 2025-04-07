@@ -1,66 +1,80 @@
 /* global process */
 import { sequelize } from './src/models/index.js';
 import dotenv from 'dotenv';
-   dotenv.config();
+import cors from 'cors'; // Import cors
 
-   import express from 'express';
-   import usersRoutes from './src/routes/usersRoutes.js'
-   import wasteRoutes from './src/routes/wasteRoutes.js';
-   import achievementsRoutes from './src/routes/achievementsRoutes.js';
-   import friendsRoutes from './src/routes/friendsRoutes.js';
-   import questionsRoutes from './src/routes/questionsRoutes.js'
-   import leaderboardsRoutes from './src/routes/leaderboardsRoutes.js';
-   import categoryRoutes from './src/routes/categoryRoutes.js';
+dotenv.config();
 
+import express from 'express';
+import usersRoutes from './src/routes/usersRoutes.js';
+import wasteRoutes from './src/routes/wasteRoutes.js';
+import achievementsRoutes from './src/routes/achievementsRoutes.js';
+import friendsRoutes from './src/routes/friendsRoutes.js';
+import questionsRoutes from './src/routes/questionsRoutes.js';
+import leaderboardsRoutes from './src/routes/leaderboardsRoutes.js';
+import categoryRoutes from './src/routes/categoryRoutes.js';
 
-   // Initialize Express app
-   const app = express();
+// Initialize Express app
+const app = express();
 
-   // Middleware to parse JSON requests
-   app.use(express.json());
+// Enable CORS for the frontend origin
+app.use(cors({
+  origin: 'http://localhost:5173', // Mise à jour avec l'origine correcte du frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-   // Define routes
-   app.use('/api/waste', wasteRoutes);
-   app.use('/api/users', usersRoutes)
-   app.use('/api/achievements', achievementsRoutes);
-   app.use('/api/friends', friendsRoutes);
-   app.use('/api/questions',questionsRoutes)
-   app.use('/api/leaderboards', leaderboardsRoutes);
-   app.use('/api/category', categoryRoutes);
+// Middleware to parse JSON requests only if Content-Type is application/json
+app.use((req, res, next) => {
+  if (req.headers['content-type'] === 'application/json') {
+    express.json()(req, res, next);
+  } else {
+    next();
+  }
+});
 
-   // Basic route for testing
-   app.get('/', (req, res) => {
-     res.send('Hello, Clean Up Crew!');
-   });
+// Define routes
+app.use('/api/waste', wasteRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/achievements', achievementsRoutes);
+app.use('/api/friends', friendsRoutes);
+app.use('/api/questions', questionsRoutes);
+app.use('/api/leaderboards', leaderboardsRoutes);
+app.use('/api/category', categoryRoutes);
 
-   // Error handling middleware
-   app.use((err, req, res, next) => {
-     console.error(err.stack);
-     res.status(500).json({ message: 'Something went wrong!' });
-   });
+// Basic route for testing
+app.get('/', (req, res) => {
+  res.send('Hello, Clean Up Crew!');
+});
 
-   // Define port
-   const PORT = process.env.PORT || 3000;
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
 
-   // Start the server and connect to the database
-   const startServer = async () => {
-     try {
-       // Test the database connection
-       await sequelize.authenticate();
-       console.log('Database connection has been established successfully.');
+// Define port
+const PORT = process.env.PORT || 3000;
 
-       // Synchronize models with the database (create tables if they don't exist)
-       await sequelize.sync({ force: false }); // Set to true to drop and recreate tables (useful for development)
-       console.log('Models synchronized with the database.');
+// Start the server and connect to the database
+const startServer = async () => {
+  try {
+    // Test the database connection
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
 
-       // Start the server
-       app.listen(PORT, () => {
-         console.log(`Server running on http://localhost:${PORT}`);
-       });
-     } catch (error) {
-       console.error('Unable to connect to the database:', error);
-     }
-   };
+    // Synchronize models with the database (create tables if they don't exist)
+    await sequelize.sync({ force: false }); // Set to true to drop and recreate tables (useful for development)
+    console.log('Models synchronized with the database.');
 
-   // Run the server
-   startServer();
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+};
+
+// Run the server
+startServer();
