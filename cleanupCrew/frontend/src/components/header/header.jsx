@@ -6,33 +6,20 @@ export const Header = () => {
   const [score, setScore] = useState(0);
 
   useEffect(() => {
-    // Get the token from localStorage or another place where you store it
-    const token = localStorage.getItem('token');
-
-    // Check if there is a token
-    if (token) {
-      fetch('http://localhost:5000/api/user/score', {  // Change the URL as needed
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,  // Add the token in the headers
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.score !== undefined) {
-            setScore(data.score);  // Update the score
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching score:', error);
-        });
+    // Retrieve the "user" object from localStorage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      // Parse the JSON and extract the "escore" property
+      const user = JSON.parse(storedUser);
+      // Set the score using the "escore" value (convert to integer if needed)
+      setScore(parseInt(user.score, 10));
     }
   }, []);
 
   return (
     <section className='headerSection'>
       <img className='headerLogo' src={cleanupLogo} alt="headerLogo" />
-      <p className='headerPoints'>{score} points</p>  {/* Display the score */}
+      <p className='headerPoints'>{score} points</p>  {/* Display the score from the "user" object in localStorage */}
     </section>
   );
 };
