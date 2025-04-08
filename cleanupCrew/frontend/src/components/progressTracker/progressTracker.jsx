@@ -27,7 +27,7 @@ export const ProgressTracker = () => {
     fetchGoals();
   }, []);
 
-  // Calculate percentage for a given type
+  // Calculate percentage for the circular progress bars
   const calculatePercentage = (collectedItems, totalItems) => {
     return (collectedItems / totalItems) * 100;
   };
@@ -44,15 +44,15 @@ export const ProgressTracker = () => {
         <div className='progressToday'>
           <div className='collectWrapper'>
             <div className='glassCircle'></div>
-            <p>Glass - {collected.glass}/<span>{goals.glass}</span> collected</p> {/* Only the goal is dynamic */}
+            <p>Glass - {collected.glass}/<span>{goals.glass}</span> collected</p>
           </div>
           <div className='collectWrapper'>
             <div className='paperCircle'></div>
-            <p>Paper - {collected.paper}/<span>{goals.paper}</span> collected</p> {/* Only the goal is dynamic */}
+            <p>Paper - {collected.paper}/<span>{goals.paper}</span> collected</p>
           </div>
           <div className='collectWrapper'>
             <div className='plasticCircle'></div>
-            <p>Plastic - {collected.plastic}/<span>{goals.plastic}</span> collected</p> {/* Only the goal is dynamic */}
+            <p>Plastic - {collected.plastic}/<span>{goals.plastic}</span> collected</p>
           </div>
         </div>
         
@@ -78,7 +78,7 @@ export const ProgressTracker = () => {
               <CircularProgressbar
                 value={calculatePercentage(collected.plastic, goals.plastic)}
                 strokeWidth={8}
-                text={`${Math.round(totalPercentage)}% Done`} // Now shows the total percentage
+                text={`${Math.round(totalPercentage)}% Done`} // Total percentage of all garbage types
                 styles={buildStyles({
                   strokeLinecap: 'butt',
                   pathColor: '#F6D65D',
