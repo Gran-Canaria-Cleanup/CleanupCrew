@@ -19,8 +19,8 @@ router.get('/', authMiddleware, async (req, res) => {
     if (goals.length === 0) {
       const defaultGoals = [
         { type: 'glass', target: 20, date: today },
-        { type: 'paper', target: 20, date: today },
-        { type: 'plastic', target: 20, date: today },
+        { type: 'paper', target: 15, date: today },
+        { type: 'plastic', target: 30, date: today },
       ];
 
       goals = await Promise.all(

@@ -42,9 +42,17 @@ router.get('/', authMiddleware, async (req, res) => {
 // Add a piece of trash (Protected)
 router.post('/collect', authMiddleware, async (req, res) => {
   try {
-    const { type } = req.body; // Ex: "glass", "paper", "plastic"
+    const { type, quantity } = req.body; // Ex: { "type": "glass", "quantity": 5 }
+
+    // Validate trash type
     if (!['glass', 'paper', 'plastic'].includes(type)) {
       return res.status(400).json({ message: 'Invalid trash type' });
+    }
+
+    // Validate quantity (must be a positive integer)
+    const parsedQuantity = parseInt(quantity, 10);
+    if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
+      return res.status(400).json({ message: 'Quantity must be a positive integer' });
     }
 
     const today = new Date().toISOString().split('T')[0]; // Format: "2025-04-08"
@@ -66,13 +74,13 @@ router.post('/collect', authMiddleware, async (req, res) => {
       });
     }
 
-    // Increment the collected count for the specified type
-    progress[type] = (progress[type] || 0) + 1;
+    // Increment the collected count for the specified type by the quantity
+    progress[type] = (progress[type] || 0) + parsedQuantity;
     await progress.save();
 
     // Add points to the user (1 point per item collected)
     const user = await User.findByPk(req.user.id);
-    await user.update({ score: (user.score || 0) + 1 });
+    await user.update({ score: (user.score || 0) + parsedQuantity });
 
     // Format the response
     const progressMap = {

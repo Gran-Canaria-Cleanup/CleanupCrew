@@ -73,9 +73,9 @@ export const getDailyProgress = async () => {
 };
 
 // Function to add a piece of trash
-export const addTrash = async (type) => {
+export const addTrash = async (type, quantity = 1) => {
   try {
-    const response = await api.post('/api/waste/collect', { type }, {
+    const response = await api.post('/api/waste/collect', { type, quantity }, {
       headers: {
         'Content-Type': 'application/json',
       },

@@ -62,7 +62,7 @@ router.post('/login', async (req, res) => {
     // Generate the token
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1h' });
 
-    res.status(200).json({ message: 'Login successful', token });
+    res.status(200).json({ message: 'Login successful', token, user: { id: user.id, name: user.name, email: user.email } });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
@@ -137,5 +137,19 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     res.status(500).json({ message: 'Error deleting user', error: error.message });
   }
 });
+
+// Get the user score
+router.get('/score', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ score: user.score });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching score', error: error.message });
+  }
+});
+
 
 export default router;
