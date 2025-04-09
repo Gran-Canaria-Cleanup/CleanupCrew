@@ -7,6 +7,7 @@ import TrashModel from './Trash.js';
 import LeaderboardModel from './Leaderboard.js';
 import FriendModel from './Friend.js';
 import QuestionModel from './Question.js';
+import GoalsModel from './Goals.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -29,6 +30,7 @@ const Trash = TrashModel(sequelize);
 const Leaderboard = LeaderboardModel(sequelize);
 const Friend = FriendModel(sequelize);
 const Question = QuestionModel(sequelize);
+const Goal = GoalsModel(sequelize);
 
 // Define the intermediary model (LeaderboardUser)
 const LeaderboardUser = sequelize.define('LeaderboardUser', {}, { timestamps: false });
@@ -52,6 +54,9 @@ Friend.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(Question, { foreignKey: 'user_id' });
 Question.belongsTo(User, { foreignKey: 'user_id' });
 
+User.hasMany(Goal, { foreignKey: 'user_id' });
+Goal.belongsTo(User, { foreignKey: 'user_id' });
+
 // Export models and sequelize instance
 export {
   sequelize,
@@ -62,4 +67,5 @@ export {
   Leaderboard,
   Friend,
   Question,
+  Goal,
 };

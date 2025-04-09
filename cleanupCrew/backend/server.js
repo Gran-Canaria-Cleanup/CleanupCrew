@@ -13,6 +13,7 @@ import friendsRoutes from './src/routes/friendsRoutes.js';
 import questionsRoutes from './src/routes/questionsRoutes.js';
 import leaderboardsRoutes from './src/routes/leaderboardsRoutes.js';
 import categoryRoutes from './src/routes/categoryRoutes.js';
+import goalsRoutes from './src/routes/goalsRoutes.js';
 
 // Initialize Express app
 const app = express();
@@ -41,6 +42,7 @@ app.use('/api/friends', friendsRoutes);
 app.use('/api/questions', questionsRoutes);
 app.use('/api/leaderboards', leaderboardsRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/goals', goalsRoutes)
 
 // Basic route for testing
 app.get('/', (req, res) => {
