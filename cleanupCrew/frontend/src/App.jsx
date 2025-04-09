@@ -9,6 +9,8 @@ import { QuizScreen } from '../src/pageComponents/quiz/quizScreen.jsx';
 import { StatsScreen } from '../src/pageComponents/stats/statsScreen.jsx';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QuizSplashScreen } from '../src/pageComponents/quizSplashScreen/quizSplashScreen.jsx';
+import { QuizEndScreen } from '../src/pageComponents/quizEndScreen/quizEndScreen.jsx';
+
 
 // PrivateRoute component to protect routes
 const PrivateRoute = ({ children }) => {
@@ -34,6 +36,7 @@ function App() {
         <Route path="/profile" element={<ProfileScreen />} /> {/* Profile page */}
         <Route path="/quiz" element={<QuizScreen />} /> {/* Quiz page */}
         <Route path="/quizSplash" element={<QuizSplashScreen />} /> {/* Quiz Splash page */}
+        <Route path="/quizend" element={<QuizEndScreen />} /> {/* Quiz End page */}
         <Route path="/stats" element={<StatsScreen />} /> {/* Stats page */}
       </Routes>
     </BrowserRouter>
