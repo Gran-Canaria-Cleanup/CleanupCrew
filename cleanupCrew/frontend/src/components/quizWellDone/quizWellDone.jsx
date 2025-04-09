@@ -4,14 +4,14 @@ import { Link }  from "react-router-dom"
 
 export const QuizWellDone = () => {
   return (
-    <section className='quizGetStartedSection'>
-        <div className='quizGetStartedWrapper'>
-          <div className='quizTime' >
+    <section className='quizWellDoneSection'>
+        <div className='quizWellDoneWrapper'>
+          <div className='wellDone' >
             <h2>
               Well Done!
             </h2>
           </div>
-        <button className='quizGetStartedButton'>
+        <button className='quizWellDoneButton'>
             <Link className='quizButtonText' to="/homepage">Go to main page</Link>
         </button>
         <div className='quizGetStartedText'>

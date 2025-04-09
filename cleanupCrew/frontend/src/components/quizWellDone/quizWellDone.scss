@@ -1,12 +1,12 @@
 @import '../../var.scss';
 
-.quizGetStartedSection{
+.quizWellDoneSection{
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     flex-direction: column;
-    .quizGetStartedButton{
+    .quizWellDoneButton{
             width: 100%;
             background-color: $color-light-green;
             border: 0;
@@ -34,15 +34,15 @@
     }
 }
 
-.quizGetStartedWrapper{
+.quizWellDoneWrapper{
     width: 75vw;
-    height: 30vh;
+    height: 35vh;
     position: absolute;
     bottom: 1rem;
     padding-bottom: 1rem;
 }
 
-.quizTime{
+.wellDone{
     color: black;
     font-size: 1rem;
     margin-bottom: 4rem;
