@@ -20,7 +20,12 @@ export const loginUser = async (email, password) => {
       },
     });
 
-    return response.data; // { message: "Login successful", token: "..." }
+    // Store token and user in localStorage
+    const { token, user } = response.data;
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+
+    return response.data; // { message: "Login successful", token: "...", user: { id, name, email, score } }
   } catch (error) {
     if (error.response && error.response.data) {
       throw error.response.data;

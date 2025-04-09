@@ -1,41 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './progressTracker.scss';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-export const ProgressTracker = () => {
-  const [goals, setGoals] = useState({ glass: 0, paper: 0, plastic: 0 });
-  const [collected, setCollected] = useState({ glass: 16, paper: 9, plastic: 15 }); // Example collected items
-
-  useEffect(() => {
-    // Fetch goals from the API
-    const fetchGoals = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/goals/', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}` // Ensure token is available
-          }
-        });
-        const data = await response.json();
-        setGoals(data); // Assuming the response is { glass: 20, paper: 20, plastic: 20 }
-      } catch (error) {
-        console.error('Error fetching goals:', error);
-      }
-    };
-
-    fetchGoals();
-  }, []);
-
+export const ProgressTracker = ({ goals, progress }) => {
   // Calculate percentage for the circular progress bars
   const calculatePercentage = (collectedItems, totalItems) => {
-    return (collectedItems / totalItems) * 100;
+    return totalItems > 0 ? (collectedItems / totalItems) * 100 : 0;
   };
 
   // Calculate the overall total percentage for all garbage types
-  const totalCollected = collected.glass + collected.paper + collected.plastic;
-  const totalGoals = goals.glass + goals.paper + goals.plastic;
-  const totalPercentage = totalGoals > 0 ? (totalCollected / totalGoals) * 100 : 0;
+  const totalCollected = (progress.glass || 0) + (progress.paper || 0) + (progress.plastic || 0);
+  const totalGoals = (goals.glass || 0) + (goals.paper || 0) + (goals.plastic || 0);
+  const totalPercentage = totalGoals > 0 ? Math.round((totalCollected / totalGoals) * 100) : 0;
 
   return (
     <>
@@ -44,21 +21,21 @@ export const ProgressTracker = () => {
         <div className='progressToday'>
           <div className='collectWrapper'>
             <div className='glassCircle'></div>
-            <p>Glass - {collected.glass}/<span>{goals.glass}</span> collected</p>
+            <p>Glass - {progress.glass || 0}/<span>{goals.glass || 20}</span> collected</p>
           </div>
           <div className='collectWrapper'>
             <div className='paperCircle'></div>
-            <p>Paper - {collected.paper}/<span>{goals.paper}</span> collected</p>
+            <p>Paper - {progress.paper || 0}/<span>{goals.paper || 20}</span> collected</p>
           </div>
           <div className='collectWrapper'>
             <div className='plasticCircle'></div>
-            <p>Plastic - {collected.plastic}/<span>{goals.plastic}</span> collected</p>
+            <p>Plastic - {progress.plastic || 0}/<span>{goals.plastic || 20}</span> collected</p>
           </div>
         </div>
         
         <section className='circleProgressSection'>
           <CircularProgressbar
-            value={calculatePercentage(collected.glass, goals.glass)}
+            value={calculatePercentage(progress.glass || 0, goals.glass || 20)}
             strokeWidth={5}
             styles={buildStyles({
               strokeLinecap: 'butt',
@@ -67,7 +44,7 @@ export const ProgressTracker = () => {
           />
           <div className='paperProgress'>
             <CircularProgressbar
-              value={calculatePercentage(collected.paper, goals.paper)}
+              value={calculatePercentage(progress.paper || 0, goals.paper || 20)}
               strokeWidth={7}
               styles={buildStyles({
                 strokeLinecap: 'butt',
@@ -76,9 +53,9 @@ export const ProgressTracker = () => {
             />
             <div className='plasticProgress'>
               <CircularProgressbar
-                value={calculatePercentage(collected.plastic, goals.plastic)}
+                value={calculatePercentage(progress.plastic || 0, goals.plastic || 20)}
                 strokeWidth={8}
-                text={`${Math.round(totalPercentage)}% Done`} // Total percentage of all garbage types
+                text={`${totalPercentage}% Done`}
                 styles={buildStyles({
                   strokeLinecap: 'butt',
                   pathColor: '#F6D65D',
