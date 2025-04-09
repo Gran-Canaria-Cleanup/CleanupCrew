@@ -2,49 +2,84 @@ import React, { useState } from 'react';
 import './addTrash.scss';
 
 export const AddTrash = ({ onAddTrash }) => {
-  const [quantity, setQuantity] = useState(1); // Quantité par défaut
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTrashType, setSelectedTrashType] = useState('');
+  const [count, setCount] = useState(1);
 
-  const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setQuantity(value);
-    } else {
-      setQuantity(1); // Réinitialiser à 1 si la valeur est invalide
+  const openModal = (type) => {
+    setSelectedTrashType(type);
+    setCount(1);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedTrashType('');
+  };
+
+  const increment = () => setCount((prev) => prev + 1);
+  const decrement = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const handleSave = () => {
+    // Mappe le type affiché dans la modale (Plastic, Glass, Paper) au type attendu par l'API (plastic, glass, paper)
+    const trashType = selectedTrashType.toLowerCase();
+    onAddTrash(trashType, count); // Appelle la fonction onAddTrash avec le type et la quantité
+    closeModal(); // Ferme la modale après avoir sauvegardé
+  };
+
+  const getModalColorClass = () => {
+    switch (selectedTrashType) {
+      case 'Plastic':
+        return 'yellowModal';
+      case 'Glass':
+        return 'greenModal';
+      case 'Paper':
+        return 'blueModal';
+      default:
+        return '';
     }
   };
 
   return (
     <section className="addTrashSection">
       <h2>Add trash here!</h2>
-      <div className="quantityInput">
-        <label htmlFor="quantity">Quantity: </label>
-        <input
-          type="number"
-          id="quantity"
-          value={quantity}
-          onChange={handleQuantityChange}
-          min="1"
-        />
-      </div>
+
       <section className="trashButtonSection">
-        <div id="yellowButton" className="trashButton" onClick={() => onAddTrash('plastic', quantity)}>
-          <div className="trashText">
-            <h2>Plastic</h2>
-            <p>+</p>
+        {modalOpen ? (
+          <div className={`inlineModal styledModal ${getModalColorClass()}`}>
+            <button className="closeButton" onClick={closeModal}>×</button>
+            <p>How many {selectedTrashType.toLowerCase()} items you want to add?</p>
+            <div className="rowControls">
+              <div className="counterWrapper">
+                <button onClick={decrement}>−</button>
+                <span>{count}</span>
+                <button onClick={increment}>+</button>
+              </div>
+              <button className="saveButton" onClick={handleSave}>Save</button>
+            </div>
           </div>
-        </div>
-        <div id="greenButton" className="trashButton" onClick={() => onAddTrash('glass', quantity)}>
-          <div className="trashText">
-            <h2>Glass</h2>
-            <p>+</p>
-          </div>
-        </div>
-        <div id="blueButton" className="trashButton" onClick={() => onAddTrash('paper', quantity)}>
-          <div className="trashText">
-            <h2>Paper</h2>
-            <p>+</p>
-          </div>
-        </div>
+        ) : (
+          <>
+            <div id="yellowButton" className="trashButton" onClick={() => openModal('Plastic')}>
+              <div className="trashText">
+                <h2>Plastic</h2>
+                <p>+</p>
+              </div>
+            </div>
+            <div id="greenButton" className="trashButton" onClick={() => openModal('Glass')}>
+              <div className="trashText">
+                <h2>Glass</h2>
+                <p>+</p>
+              </div>
+            </div>
+            <div id="blueButton" className="trashButton" onClick={() => openModal('Paper')}>
+              <div className="trashText">
+                <h2>Paper</h2>
+                <p>+</p>
+              </div>
+            </div>
+          </>
+        )}
       </section>
     </section>
   );
