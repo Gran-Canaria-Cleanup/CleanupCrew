@@ -11,18 +11,27 @@ export const LoginSection = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(''); // Reset error message
-
+    setError('');
+  
     try {
       const data = await loginUser(email, password);
-      // Store the token in localStorage
+  
+      // Guarda el token
       localStorage.setItem('token', data.token);
-      // Redirect to homepage
+      localStorage.setItem('user', JSON.stringify(data.user));
+  
+      // Guarda el nombre (y cualquier otro dato que quieras)
+      if (data.user) {
+        localStorage.setItem('name', JSON.stringify(data.name));
+      }
+  
+      // Redirige al homepage
       navigate('/homepage');
     } catch (err) {
       setError(err.message || 'An error occurred during login');
     }
   };
+  
 
   return (
     <section className='loginSection'>
