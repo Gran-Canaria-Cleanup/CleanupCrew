@@ -1,0 +1,53 @@
+@import '../../var.scss';
+
+.quizGetStartedSection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    .quizGetStartedButton{
+            width: 100%;
+            background-color: $color-light-green;
+            border: 0;
+            border-radius: 32px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+
+        .quizButtonText{
+            font-family: $font-primary;
+            font-weight: 500;
+            font-size: 20px;
+            text-decoration: none;
+            color: black;
+        }
+    }
+
+    .quizGetStartedText{
+            margin-top: 3rem;
+        p{
+            color: black;
+            font-family: $font-primary;
+            font-weight: 600;
+            font-size: 18px;
+        }
+    }
+}
+
+.quizGetStartedWrapper{
+    width: 75vw;
+    height: 30vh;
+    position: absolute;
+    bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+.quizTime{
+    color: black;
+    font-size: 1rem;
+    margin-bottom: 4rem;
+    h2{
+        font-weight: 500;
+        font-size: 2rem;
+    }
+}
