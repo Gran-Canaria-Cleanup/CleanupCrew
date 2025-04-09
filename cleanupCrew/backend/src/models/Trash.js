@@ -19,6 +19,10 @@ export default (sequelize) => {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
   }, {
     timestamps: true,
     tableName: 'Trash',

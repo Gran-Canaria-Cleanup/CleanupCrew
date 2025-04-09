@@ -4,37 +4,91 @@ import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Add waste collection for a user (Protected)
-router.post('/collect', authMiddleware, async (req, res) => {
+// Get user's daily progress (Protected)
+router.get('/', authMiddleware, async (req, res) => {
   try {
-    const { userId, glass, plastic, paper } = req.body;
-
-    // Find user
-    const user = await User.findByPk(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Create new waste entry
-    const waste = await Trash.create({
-      user_id: userId,
-      glass: glass || 0,
-      plastic: plastic || 0,
-      paper: paper || 0,
+    const today = new Date().toISOString().split('T')[0]; // Format: "2025-04-08"
+    let progress = await Trash.findOne({
+      where: {
+        user_id: req.user.id,
+        date: today,
+      },
     });
 
-    // Update user score (example: 1 point per unit of waste)
-    user.score += (glass || 0) + (plastic || 0) + (paper || 0);
-    await user.save();
+    // If no progress exists for today, create a default progress entry
+    if (!progress) {
+      progress = await Trash.create({
+        user_id: req.user.id,
+        glass: 0,
+        plastic: 0,
+        paper: 0,
+        date: today,
+      });
+    }
 
-    res.status(201).json({ message: 'Waste collected successfully', waste });
+    // Format the response
+    const progressMap = {
+      glass: progress.glass,
+      paper: progress.paper,
+      plastic: progress.plastic,
+    };
+
+    res.status(200).json(progressMap); // Ex: { "glass": 16, "paper": 9, "plastic": 15 }
   } catch (error) {
-    res.status(500).json({ message: 'Error collecting waste', error: error.message });
+    res.status(500).json({ message: 'Error fetching progress', error: error.message });
+  }
+});
+
+// Add a piece of trash (Protected)
+router.post('/collect', authMiddleware, async (req, res) => {
+  try {
+    const { type } = req.body; // Ex: "glass", "paper", "plastic"
+    if (!['glass', 'paper', 'plastic'].includes(type)) {
+      return res.status(400).json({ message: 'Invalid trash type' });
+    }
+
+    const today = new Date().toISOString().split('T')[0]; // Format: "2025-04-08"
+    let progress = await Trash.findOne({
+      where: {
+        user_id: req.user.id,
+        date: today,
+      },
+    });
+
+    if (!progress) {
+      // Create a new progress entry if it doesn't exist
+      progress = await Trash.create({
+        user_id: req.user.id,
+        glass: 0,
+        plastic: 0,
+        paper: 0,
+        date: today,
+      });
+    }
+
+    // Increment the collected count for the specified type
+    progress[type] = (progress[type] || 0) + 1;
+    await progress.save();
+
+    // Add points to the user (1 point per item collected)
+    const user = await User.findByPk(req.user.id);
+    await user.update({ score: (user.score || 0) + 1 });
+
+    // Format the response
+    const progressMap = {
+      glass: progress.glass,
+      paper: progress.paper,
+      plastic: progress.plastic,
+    };
+
+    res.status(200).json({ message: 'Trash added successfully', progress: progressMap });
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding trash', error: error.message });
   }
 });
 
 // Get waste collection history for a user (Protected)
-router.get('/:userId', authMiddleware, async (req, res) => {
+router.get('/history/:userId', authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params;
 

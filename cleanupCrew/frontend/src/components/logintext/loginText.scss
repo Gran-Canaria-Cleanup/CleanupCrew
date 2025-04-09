@@ -1,0 +1,24 @@
+.loginTextSection{
+    display: flex;
+    position: absolute;
+    bottom: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    .loginText{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        color: black;
+        $font-primary: 'Instrument Sans';
+    }
+}
+
+@media (max-height: 715px) {
+    .loginText{
+        opacity: 0;
+    }
+}

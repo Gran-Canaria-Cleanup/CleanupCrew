@@ -1,0 +1,35 @@
+@import '../../var.scss';
+
+.navSection{
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    .navItemSection{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-right: 1rem;
+        margin-left: 1rem;
+        a{
+            text-decoration: none;
+        }
+        .navButton{
+            display: flex;
+            flex-direction: column;
+            line-height: 1px;
+            img{
+                height: 2rem;
+            }
+        .navClick{
+            color: black;
+            margin-right: 1rem;
+            margin-left: 1rem;
+            text-decoration: none;
+            font-family: $font-primary;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    }
+    }
+}

@@ -1,0 +1,17 @@
+@import '../../var.scss';
+
+.headerSection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 2rem;
+    .headerLogo{
+        height: 3.5rem;
+    }
+    .headerPoints{
+        color: black;
+        font-weight: 600;
+        font-family: $font-primary;
+        font-size: 19px;
+    }
+}

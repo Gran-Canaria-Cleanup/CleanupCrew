@@ -1,0 +1,52 @@
+@import '../../var.scss';
+
+.loginSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    input {
+        margin-bottom: 2rem;
+        text-decoration: none;
+        opacity: 100;
+        border: none;
+        border-bottom: 1px solid black;
+        width: 15rem;
+    }
+    input::placeholder {
+        color: black;
+        opacity: 100;
+    }
+    button {
+        width: 12rem;
+        background-color: $color-light-green;
+        border: 0;
+        border-radius: 32px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    .loginForm {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative; /* Ajout pour positionner le message d'erreur */
+    }
+    .error {
+        position: absolute; /* Positionnement absolu pour ne pas affecter le layout */
+        top: 100%; /* Positionne le message juste en dessous du formulaire */
+        margin-top: 1rem; /* Espacement supplémentaire */
+        color: red; /* Couleur pour le message d'erreur */
+        font-size: 14px;
+        text-align: center;
+        width: 100%; /* S'assure que le texte est centré sur toute la largeur */
+    }
+}
+
+.loginButtonText {
+    color: black;
+    text-decoration: none;
+    font-family: $font-primary;
+    font-weight: 500;
+    font-size: 14px;
+}

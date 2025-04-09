@@ -1,0 +1,72 @@
+.circleProgressSection {
+    width: 45%;
+    position: relative;
+}
+
+.circleProgressSection .paperProgress {
+    width: 78%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.paperProgress .plasticProgress {
+    width: 70%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.progressSection{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.glassCircle{
+    background-color: #A8DF8A;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 100%;
+}
+
+.paperCircle{
+    background-color: #6EB7EB;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 100%;
+}
+
+.plasticCircle{
+    background-color: #F6D65D;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 100%;
+}
+
+.collectWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.progressToday{
+    color: black;
+    p{
+        font-size: 14px;
+        margin-left: 0.75rem;
+    }
+}
+
+.progressTodayText{
+    color: black;
+    margin-top: 2rem;
+    margin-bottom: -1rem;
+    margin-left: 1rem;
+}
