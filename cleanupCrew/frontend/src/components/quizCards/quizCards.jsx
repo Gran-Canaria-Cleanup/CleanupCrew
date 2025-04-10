@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Hammer from 'hammerjs';
+import { useNavigate } from 'react-router-dom';
 import './quizCards.scss';
 import nopesvg from "../../assets/images/nope.svg";
 import yessvg from "../../assets/images/yes.svg";
@@ -10,6 +11,7 @@ const TinderCards = () => {
   const allCards = useRef([]);
   const containerLoaded = useRef(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   const cards = [
     { id: 1, question: 'Does recycling one aluminum can save enough energy to power a TV for 3 hours?', correctAnswer: true },
@@ -62,7 +64,13 @@ const TinderCards = () => {
       `Q${questionId}: ${currentQuestion.question} — You answered: ${userAnswer ? 'Yes' : 'No'} — ${correct ? '✅ Correct!' : '❌ Wrong!'}`
     );
 
-    setCurrentIndex(prev => Math.min(prev + 1, cards.length));
+    setCurrentIndex(prev => {
+      const newIndex = prev + 1;
+      if (newIndex >= cards.length) {
+        setTimeout(() => navigate('/quizend'), 500); // delay for animation
+      }
+      return newIndex;
+    });
   };
 
   const createHammer = (el) => {
@@ -135,8 +143,8 @@ const TinderCards = () => {
 
   return (
     <section className='quizBody'>
-          {/* Progress Bar Section */}
-          <div className="quiz-progress">
+      {/* Progress Bar Section */}
+      <div className="quiz-progress">
         <div className="quiz-progress__info">
           Question {Math.min(currentIndex + 1, cards.length)} of {cards.length}
         </div>
@@ -147,40 +155,39 @@ const TinderCards = () => {
           />
         </div>
       </div>
-    <div className="tinder" ref={tinderRef}>
 
-
-      <div className="tinder--status">
-        <i className="fa fa-remove"></i>
-        <i className="fa fa-heart"></i>
-      </div>
-
-      <div className="tinder--cards">
-        {cards.map((card, index) => (
-          <div
-            key={card.id}
-            className="tinder--card"
-            data-id={card.id}
-            ref={(el) => (cardRefs.current[index] = el)}
-          >
-            <h3>{card.question}</h3>
-            <p>Swipe right for "Yes", left for "No"</p>
-            <div className="feedback" />
-          </div>
-        ))}
-      </div>
-
-      <div className="tinder--buttons">
-        <button id="nope" onClick={handleButton(false)}>
-          <img src={nopesvg} alt="" />
+      <div className="tinder" ref={tinderRef}>
+        <div className="tinder--status">
           <i className="fa fa-remove"></i>
-        </button>
-        <button id="love" onClick={handleButton(true)}>
-          <img src={yessvg} alt="" />
           <i className="fa fa-heart"></i>
-        </button>
+        </div>
+
+        <div className="tinder--cards">
+          {cards.map((card, index) => (
+            <div
+              key={card.id}
+              className="tinder--card"
+              data-id={card.id}
+              ref={(el) => (cardRefs.current[index] = el)}
+            >
+              <h3>{card.question}</h3>
+              <p>Swipe right for "Yes", left for "No"</p>
+              <div className="feedback" />
+            </div>
+          ))}
+        </div>
+
+        <div className="tinder--buttons">
+          <button id="nope" onClick={handleButton(false)}>
+            <img src={nopesvg} alt="" />
+            <i className="fa fa-remove"></i>
+          </button>
+          <button id="love" onClick={handleButton(true)}>
+            <img src={yessvg} alt="" />
+            <i className="fa fa-heart"></i>
+          </button>
+        </div>
       </div>
-    </div>
     </section>
   );
 };
