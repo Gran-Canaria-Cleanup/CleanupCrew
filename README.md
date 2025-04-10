@@ -47,6 +47,8 @@ A interactive point system, that helps you track your efforts!
   npm install dotenv
   npm install --save react-circular-progressbar
   npm install --save hammerjs
+  npm install cors
+  npm install axios
 ```
     
 ## Authors
