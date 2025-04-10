@@ -1,130 +1,143 @@
 .tinder {
     width: 100vw;
-    height: 100vh;
+    height: 75vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     position: relative;
     opacity: 0;
-    transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7rem;
   }
   
   .loaded.tinder {
     opacity: 1;
   }
   
-  .tinder--status {
-    position: absolute;
-    top: 50%;
-    margin-top: -30px;
-    z-index: 2;
-    width: 100%;
-    text-align: center;
-    pointer-events: none;
-  }
-  
-  .tinder--status i {
-    font-size: 100px;
-    opacity: 0;
-    transform: scale(0.3);
-    transition: all 0.2s ease-in-out;
-    position: absolute;
-    width: 100px;
-    margin-left: -50px;
-  }
-  
-  .tinder_love .fa-heart {
-    opacity: 0.7;
-    transform: scale(1);
-  }
-  
-  .tinder_nope .fa-remove {
-    opacity: 0.7;
-    transform: scale(1);
-  }
-  
   .tinder--cards {
     flex-grow: 1;
-    padding-top: 40px;
-    text-align: center;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    z-index: 1;
+    align-items: center;
+    position: relative;
   }
   
   .tinder--card {
-    display: inline-block;
+    background-color: #fefaf2;
+    border-radius: 20px;
+    box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+    padding: 2rem;
+    height: 30vh;
+    max-width: 275px;
     width: 90vw;
-    max-width: 300px;
-    height: 40vh;
-    background: #000000;
-    padding-bottom: 40px;
-    border-radius: 8px;
-    overflow: hidden;
     position: absolute;
-    will-change: transform;
-    transition: all 0.3s ease-in-out;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
     cursor: grab;
   }
   
   .moving.tinder--card {
     transition: none;
-    cursor: -webkit-grabbing;
-    cursor: -moz-grabbing;
     cursor: grabbing;
   }
   
   .tinder--card h3 {
-    margin-top: 32px;
-    font-size: 32px;
-    padding: 0 16px;
-    pointer-events: none;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    color: #111;
   }
   
   .tinder--card p {
-    margin-top: 24px;
-    font-size: 20px;
-    padding: 0 16px;
-    pointer-events: none;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .tinder--card:nth-child(3n) {
+    border-color: #f6d65d;
+  }
+  
+  .tinder--card:nth-child(3n+1) {
+    border-color: #6eb7eb;
+  }
+  
+  .tinder--card:nth-child(3n+2) {
+    border-color: #a8df8a;
   }
   
   .tinder--buttons {
-    flex: 0 0 100px;
-    text-align: center;
-    padding-top: 20px;
-    margin-bottom: 7rem;
+    display: flex;
+    justify-content: center;
+    gap: 8rem;
+    margin-top: 1rem;
+    margin-bottom: 4rem;
   }
   
   .tinder--buttons button {
-    border-radius: 50%;
-    line-height: 60px;
-    width: 5rem;
-    height: 5rem;
-    border: 0;
-    background: #FFFFFF;
-    display: inline-block;
-    margin: 0 8px;
-    background-color: #FFACE4;
+    width: 90px;
+    height: 90px;
+    background-color: white;
+    border-radius: 100%;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
   }
   
-  .tinder--buttons button:focus {
-    outline: 0;
+  #nope {
+    background-color: #e57373;
+  }
+  
+  #love {
+    background-color: #a5d6a7;
+  }
+  
+  .tinder--buttons button:hover {
+    transform: scale(1.1);
   }
   
   .tinder--buttons i {
-    font-size: 32px;
-    vertical-align: middle;
+    font-size: 28px;
+    color: black;
   }
+
+  .quiz-progress {
+    position: absolute;
+    margin-top: 5rem;
+    top: 0;
+    transform: translate(-50%, -50%);
+    left: 50%;
   
-  .fa-heart {
-    color: #FFACE4;
+    &__info {
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+      color: black;
+      margin-bottom: 1.5rem;
+    }
+  
+    &__bar {
+      height: 10px;
+      background: #E9E9E9;
+      border-radius: 5px;
+      overflow: hidden;
+      width: 17rem;
+  
+      &--fill {
+        height: 100%;
+        background-color: #A8DF8A;
+        transition: width 0.4s ease;
+      }
+    }
   }
-  
-  .fa-remove {
-    color: #CDD6DD;
-  }
-  
   
