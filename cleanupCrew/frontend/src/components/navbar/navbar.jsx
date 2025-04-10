@@ -17,7 +17,7 @@ export const Navbar = () => {
           <span className='navClick'>Map</span>
         </Link>
 
-        <Link className='navButton' to="/quiz">
+        <Link className='navButton' to="/quizSplash">
           <img src={quizsvg} alt="quiz" />
           <span className='navClick'>Quiz</span>
         </Link>
