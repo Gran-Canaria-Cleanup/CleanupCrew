@@ -49,6 +49,8 @@ A interactive point system, that helps you track your efforts!
   npm install --save hammerjs
   npm install cors
   npm install axios
+  npm install leaflet
+  npm install react-leaflet@next
 ```
     
 ## Authors
