@@ -20,7 +20,7 @@ const app = express();
 
 // Enable CORS for the frontend origin
 app.use(cors({
-  origin: 'http://localhost:5173', // Mise à jour avec l'origine correcte du frontend
+  origin: 'https://0deafcb5-4438-4b5d-8c6b-92dc1abc7085.escritorios.ieselrincon.es', // Mise à jour avec l'origine correcte du frontend
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
