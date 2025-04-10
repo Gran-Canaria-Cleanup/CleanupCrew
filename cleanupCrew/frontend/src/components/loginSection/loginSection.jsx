@@ -51,7 +51,7 @@ export const LoginSection = () => {
           required
         />
         <button type="submit" className='loginButton'>
-          <span className='loginButtonText'>Get Started</span>
+          <span className='loginButtonText'>Login</span>
         </button>
         {error && <p className="error">{error}</p>}
       </form>
