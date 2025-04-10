@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    env_file:
+      - .env
+    volumes:
+      - cleanupcrew-mysql-db:/var/lib/mysql
+    ports:
+      - "3306:3306" # Change the first number for different port
+    networks:
+      - cleanupcrew-network
+  api:
+    image: cleanupcrew_api
+    build: .
+    env_file:
+      - .env
+    ports:
+      #- "443:443" # Change the first number for different port
+      - "80:80" 
+    expose:
+      #- "443" # 443 is default for https
+      - "80"
+    networks:
+      - cleanupcrew-network
+    depends_on:
+      db:
+        condition: service_healthy
+      
+volumes:
+  cleanupcrew-mysql-db:
+    driver: local
+
+networks:
+  cleanupcrew-network:
+    driver: bridge

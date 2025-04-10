@@ -1,20 +1,29 @@
 import axios from 'axios';
 
-// Create an Axios instance with the base URL of the backend
+// Determina el protocolo basado en la variable de entorno VITE_HTTPS
+const protocol = import.meta.env.VITE_HTTPS === 'true' ? 'https' : 'http';
+
+// Asigna el host y puerto usando las variables de entorno
+const host = import.meta.env.VITE_API_HOST;
+const port = import.meta.env.VITE_API_PORT;
+
+// Construye la URL base. Si el puerto está definido, se concatena
+const baseURL = `${protocol}://${host}${port ? ':' + port : ''}`;
+
 const api = axios.create({
-  baseURL: 'http://localhost:3000', // URL de votre backend
-  // Remove default Content-Type header
+  baseURL,
+  // Aquí podrías agregar otras configuraciones predeterminadas si lo necesitas
 });
 
-// Function to log in a user using Basic Auth
+// Función para loguear a un usuario usando Basic Auth
 export const loginUser = async (email, password) => {
   try {
-    // Encode email:password in Base64 for Basic Auth
+    // Codifica en Base64 las credenciales
     const credentials = `${email}:${password}`;
-    const base64Credentials = btoa(credentials); // btoa() encodes to Base64
+    const base64Credentials = btoa(credentials);
     const authHeader = `Basic ${base64Credentials}`;
 
-    // Send the request with the Authorization header
+    // Envía la petición con el header Authorization
     const response = await api.post('/api/users/login', null, {
       headers: {
         Authorization: authHeader,
@@ -23,16 +32,15 @@ export const loginUser = async (email, password) => {
 
     return response.data; // { message: "Login successful", token: "..." }
   } catch (error) {
-    // Handle cases where error.response is undefined (e.g., network error)
     if (error.response && error.response.data) {
-      throw error.response.data; // { message: "Missing Authorization header" }
+      throw error.response.data;
     } else {
       throw { message: 'Network error or server not responding' };
     }
   }
 };
 
-// Function to set the token in the headers for authenticated requests
+// Función para establecer el token en los headers de peticiones autenticadas
 export const setAuthToken = (token) => {
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
