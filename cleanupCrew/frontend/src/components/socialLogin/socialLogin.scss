@@ -1,3 +1,4 @@
+@import '../../var.scss';
 .socialLogin{
     position: absolute;
     bottom: 22vh;
@@ -13,8 +14,8 @@
             margin-top: 1rem;
             width: 2.2rem;
             height: 2.2rem;
-            margin-left: 1rem;
-            margin-right: 1rem;
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
         }
     }
     .socialLinks{
@@ -23,13 +24,14 @@
         align-items: center;
         justify-content: center;
         width: 100%;
+        font-size: 12px;
         a{
             text-decoration: none;
             color: black;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             span{
                 text-decoration: underline;
-                color: blue;
+                color: black;
             }
         }
     }
