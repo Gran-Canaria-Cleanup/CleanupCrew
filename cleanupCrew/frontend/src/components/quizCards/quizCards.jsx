@@ -5,13 +5,16 @@ import './quizCards.scss';
 import nopesvg from "../../assets/images/nope.svg";
 import yessvg from "../../assets/images/yes.svg";
 
-const TinderCards = () => {
+const TinderCards = ({ onQuestionChange, timeExpired }) => {
   const tinderRef = useRef(null);
   const cardRefs = useRef([]);
   const allCards = useRef([]);
   const containerLoaded = useRef(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
+  
+  // Track if a card is currently being removed to prevent double removals
+  const isRemovingCard = useRef(false);
 
   const cards = [
     { id: 1, question: 'Does recycling one aluminum can save enough energy to power a TV for 3 hours?', correctAnswer: true },
@@ -25,6 +28,24 @@ const TinderCards = () => {
     { id: 9, question: 'Is e-waste a bigger problem in high-income countries only?', correctAnswer: false },
     { id: 10, question: 'Can planting native plants help reduce water usage in gardens?', correctAnswer: true },
   ];
+
+  // Effect to handle time expiration
+  useEffect(() => {
+    if (timeExpired) {
+      const cards = allCards.current.filter(card => !card.classList.contains('removed'));
+      if (cards.length > 0) {
+        // Proceed with automatic "No" answer when time expires
+        moveToNextCard(cards[0], false);
+      }
+    }
+  }, [timeExpired]);
+
+  // Notify parent component when question changes
+  useEffect(() => {
+    if (onQuestionChange) {
+      onQuestionChange(currentIndex);
+    }
+  }, [currentIndex, onQuestionChange]);
 
   const initCards = () => {
     const newCards = allCards.current.filter(card => !card.classList.contains('removed'));
@@ -73,6 +94,27 @@ const TinderCards = () => {
     });
   };
 
+  const moveToNextCard = (cardElement, isYesSwipe) => {
+    // Prevent multiple simultaneous card removals
+    if (isRemovingCard.current) return;
+    isRemovingCard.current = true;
+    
+    const moveOutWidth = document.body.clientWidth * 1.5;
+    
+    cardElement.classList.add('removed');
+    cardElement.style.transform = isYesSwipe
+      ? `translate(${moveOutWidth}px, -100px) rotate(-30deg)`
+      : `translate(-${moveOutWidth}px, -100px) rotate(30deg)`;
+
+    checkAnswer(cardElement, isYesSwipe);
+    initCards();
+    
+    // Reset the flag after the animation completes
+    setTimeout(() => {
+      isRemovingCard.current = false;
+    }, 300);
+  };
+
   const createHammer = (el) => {
     const hammertime = new Hammer(el);
 
@@ -97,8 +139,7 @@ const TinderCards = () => {
 
       const moveOutWidth = document.body.clientWidth;
       const keep = Math.abs(event.deltaX) < 80 || Math.abs(event.velocityX) < 0.5;
-      event.target.classList.toggle('removed', !keep);
-
+      
       if (keep) {
         event.target.style.transform = '';
       } else {
@@ -111,27 +152,22 @@ const TinderCards = () => {
         const rotate = xMulti * yMulti;
 
         event.target.style.transform = `translate(${toX}px, ${toY + event.deltaY}px) rotate(${rotate}deg)`;
-
-        checkAnswer(event.target, event.deltaX > 0);
-        initCards();
+        
+        // Only add the "removed" class here if we're actually removing the card
+        event.target.classList.add('removed');
+        
+        moveToNextCard(event.target, event.deltaX > 0);
       }
     });
   };
 
   const handleButton = (love) => (e) => {
     const cards = allCards.current.filter(card => !card.classList.contains('removed'));
-    const moveOutWidth = document.body.clientWidth * 1.5;
     if (!cards.length) return;
-
+    
     const card = cards[0];
-    card.classList.add('removed');
-
-    card.style.transform = love
-      ? `translate(${moveOutWidth}px, -100px) rotate(-30deg)`
-      : `translate(-${moveOutWidth}px, -100px) rotate(30deg)`;
-
-    checkAnswer(card, love);
-    initCards();
+    moveToNextCard(card, love);
+    
     e.preventDefault();
   };
 
